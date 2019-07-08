@@ -10,7 +10,7 @@
  *
 */
 
-#define Classic_OFF   //  <- Turn _ON to use this configuration
+#define Classic_ON    //  <- Turn _ON to use this configuration
 
 #ifdef Classic_ON
 // -------------------------------------------------------------------------------------------------------------------------
@@ -101,7 +101,7 @@
 
 // ADJUST THE FOLLOWING TO MATCH YOUR MOUNT --------------------------------------------------------------------------------
 #define REMEMBER_SLEW_RATE_OFF       // Set to _ON and OnStep will remember rates set in the ASCOM driver, Android App, etc. default=_OFF.
-#define DesiredBaseSlewRate      1.0 // Desired slew (goto) rate in degrees/second; also adjustable at run-time from 1/2 to 2x this rate.
+#define DesiredBaseSlewRate      2.0 // Desired slew (goto) rate in degrees/second; also adjustable at run-time from 1/2 to 2x this rate.
                                      // The resulting step rate is automatically reduced if too high for the current hardware/settings.
 
 #define DegreesForAcceleration   5.0 // approximate number of degrees for full acceleration or deceleration: higher values=longer acceleration/deceleration
@@ -114,17 +114,17 @@
                                      // for the most part this doesn't need to be changed, but adjust when needed.  Default=25
 
                                      // Axis1 is for RA/Az
-#define StepsPerDegreeAxis1  12800.0 // calculated as    :  stepper_steps * micro_steps * gear_reduction1 * (gear_reduction2/360)
-                                     // G11              :  400           * 32          * 1               *  360/360              = 12800
+#define StepsPerDegreeAxis1   5120.0 // calculated as    :  stepper_steps * micro_steps * gear_reduction1 * (gear_reduction2/360)
+                                     // CG5              :  400           * 16          * 2               *  144              = 5120
                                      // Axis2 is for Dec/Alt
-#define StepsPerDegreeAxis2  12800.0 // calculated as    :  stepper_steps * micro_steps * gear_reduction1 * (gear_reduction2/360)
-                                     // G11              :  400           * 32          * 1               *  360/360              = 12800
+#define StepsPerDegreeAxis2   2560.0 // calculated as    :  stepper_steps * micro_steps * gear_reduction1 * (gear_reduction2/360)
+                                     // CG5              :  400           * 16          * 1               *  144              = 2560
                                      // the EM10b has two spur gears that drive the RA/Dec worms, they give an additional 1.25:1 reduction
                                      // in addition to the 18:1 gear heads on the steppers for a 22.5:1 final ratio before the worm/wheels at 144:1
                                      
                                      // PEC, number of steps for a complete worm rotation (in RA), (StepsPerDegreeAxis1*360)/gear_reduction2.  Ignored on Alt/Azm mounts.
 #define StepsPerWormRotationAxis1 12800L
-                                     // G11              : (12800*360)/360 = 12800
+                                     // CG5              : (5120*360)/144 = 12800
 
 #define PECBufferSize           824  // PEC, buffer size, max should be no more than 3384, your required buffer size >= StepsPerAxis1WormRotation/(StepsPerDegeeAxis1/240)
                                      // for the most part this doesn't need to be changed, but adjust when needed.  824 seconds is the default.  Ignored on Alt/Azm mounts.
@@ -152,7 +152,7 @@
 #define STEP_WAVE_FORM_OFF
 
 // Reverse the direction of movement.  Adjust as needed or reverse your wiring so things move in the right direction
-#define AXIS1_REVERSE_OFF            // RA/Azm axis
+#define AXIS1_REVERSE_ON             // RA/Azm axis
 #define AXIS2_REVERSE_OFF            // Dec/Alt axis
 
 // Stepper driver Enable support, just wire Enable to Pins 25 (Axis1) and 30 (Axis2) and OnStep will pull these HIGH to disable the stepper drivers on startup and when Parked or Homed. (Teensy3.x Pins 16,21)
@@ -168,12 +168,12 @@
 // If used, this requires connections M0, M1, and M2 on Pins 22,23,24 for Axis1 (RA/Azm) (Teensy3.x Pins 13,14,15.)  M0, M1, M2 are on Pins 27,28,29 for Axis2 (Dec/Alt) (Teensy3.x Pins 18,19,20.)
 // Stepper driver models are as follows: (for example AXIS1_DRIVER_MODEL DRV8825,) A4988, LV8729, RAPS128, S109, ST820, TMC2208, TMC2130 (spreadCycle,) 
 // TMC2130_QUIET (stealthChop tracking,) TMC2130_VQUIET (stealthChop tracking & slew,) add _LOWPWR for 50% power during tracking (for example: TMC2130_QUIET_LOWPWR)
-#define AXIS1_DRIVER_MODEL_OFF      // Axis1 (RA/Azm):  Default _OFF, Stepper driver model (see above)
-#define AXIS1_MICROSTEPS_OFF        // Axis1 (RA/Azm):  Default _OFF, Microstep mode when the scope is doing sidereal tracking (for example: AXIS1_MICROSTEPS 32)
-#define AXIS1_MICROSTEPS_GOTO_OFF   // Axis1 (RA/Azm):  Default _OFF, Optional microstep mode used during gotos (for example: AXIS1_MICROSTEPS_GOTO 2)
-#define AXIS2_DRIVER_MODEL_OFF      // Axis2 (Dec/Alt): Default _OFF, Stepper driver model (see above)
-#define AXIS2_MICROSTEPS_OFF        // Axis2 (Dec/Alt): Default _OFF, Microstep mode when the scope is doing sidereal tracking
-#define AXIS2_MICROSTEPS_GOTO_OFF   // Axis2 (Dec/Alt): Default _OFF, Optional microstep mode used during gotos
+#define AXIS1_DRIVER_MODEL TMC2208  // Axis1 (RA/Azm):  Default _OFF, Stepper driver model (see above)
+#define AXIS1_MICROSTEPS 16         // Axis1 (RA/Azm):  Default _OFF, Microstep mode when the scope is doing sidereal tracking (for example: AXIS1_MICROSTEPS 32)
+#define AXIS1_MICROSTEPS_GOTO 4     // Axis1 (RA/Azm):  Default _OFF, Optional microstep mode used during gotos (for example: AXIS1_MICROSTEPS_GOTO 2)
+#define AXIS2_DRIVER_MODEL TMC2208  // Axis2 (Dec/Alt): Default _OFF, Stepper driver model (see above)
+#define AXIS2_MICROSTEPS 16         // Axis2 (Dec/Alt): Default _OFF, Microstep mode when the scope is doing sidereal tracking
+#define AXIS2_MICROSTEPS_GOTO 4     // Axis2 (Dec/Alt): Default _OFF, Optional microstep mode used during gotos
 // Note: you can replace this section with the contents of "AdvancedStepperSetup.txt" . . . . . . . . . . . . . . . . . . . 
 
 // Stepper driver Fault detection
