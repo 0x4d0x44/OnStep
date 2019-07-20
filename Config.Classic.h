@@ -114,17 +114,17 @@
                                      // for the most part this doesn't need to be changed, but adjust when needed.  Default=25
 
                                      // Axis1 is for RA/Az
-#define StepsPerDegreeAxis1   5120.0 // calculated as    :  stepper_steps * micro_steps * gear_reduction1 * (gear_reduction2/360)
-                                     // CG5              :  400           * 16          * 2               *  144              = 5120
+#define StepsPerDegreeAxis1   6400.0 // calculated as    :  stepper_steps * micro_steps * gear_reduction1 * (gear_reduction2/360)
+                                     // CG5              :  400           * 16          * 2.5             *  144              = 6400
                                      // Axis2 is for Dec/Alt
-#define StepsPerDegreeAxis2   2560.0 // calculated as    :  stepper_steps * micro_steps * gear_reduction1 * (gear_reduction2/360)
-                                     // CG5              :  400           * 16          * 1               *  144              = 2560
+#define StepsPerDegreeAxis2   6400.0 // calculated as    :  stepper_steps * micro_steps * gear_reduction1 * (gear_reduction2/360)
+                                     // CG5              :  400           * 16          * 2.5             *  144              = 6400
                                      // the EM10b has two spur gears that drive the RA/Dec worms, they give an additional 1.25:1 reduction
                                      // in addition to the 18:1 gear heads on the steppers for a 22.5:1 final ratio before the worm/wheels at 144:1
                                      
                                      // PEC, number of steps for a complete worm rotation (in RA), (StepsPerDegreeAxis1*360)/gear_reduction2.  Ignored on Alt/Azm mounts.
-#define StepsPerWormRotationAxis1 12800L
-                                     // CG5              : (5120*360)/144 = 12800
+#define StepsPerWormRotationAxis1 16000L
+                                     // CG5              : (6400*360)/144 = 16000
 
 #define PECBufferSize           824  // PEC, buffer size, max should be no more than 3384, your required buffer size >= StepsPerAxis1WormRotation/(StepsPerDegeeAxis1/240)
                                      // for the most part this doesn't need to be changed, but adjust when needed.  824 seconds is the default.  Ignored on Alt/Azm mounts.
@@ -152,8 +152,8 @@
 #define STEP_WAVE_FORM_OFF
 
 // Reverse the direction of movement.  Adjust as needed or reverse your wiring so things move in the right direction
-#define AXIS1_REVERSE_ON             // RA/Azm axis
-#define AXIS2_REVERSE_OFF            // Dec/Alt axis
+#define AXIS1_REVERSE_OFF            // RA/Azm axis
+#define AXIS2_REVERSE_ON             // Dec/Alt axis
 
 // Stepper driver Enable support, just wire Enable to Pins 25 (Axis1) and 30 (Axis2) and OnStep will pull these HIGH to disable the stepper drivers on startup and when Parked or Homed. (Teensy3.x Pins 16,21)
 // An Align, Sync, or Un-Park will enable the drivers.  Adjust below if you need these pulled LOW to disable the drivers.
